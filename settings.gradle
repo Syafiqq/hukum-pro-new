@@ -1,2 +1,6 @@
+include ':app-real-test'
+include ':domain'
+include ':data'
+include ':common-java'
 include ':app'
 rootProject.name = "HukumPro"

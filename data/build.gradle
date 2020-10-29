@@ -1,0 +1,91 @@
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "kotlin-kapt"
+    id "com.google.gms.google-services"
+    id "realm-android"
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    packagingOptions {
+        exclude "META-INF/DEPENDENCIES"
+        exclude "META-INF/LICENSE"
+        exclude "META-INF/LICENSE.txt"
+        exclude "META-INF/license.txt"
+        exclude "META-INF/NOTICE"
+        exclude "META-INF/NOTICE.txt"
+        exclude "META-INF/notice.txt"
+        exclude "META-INF/ASL2.0"
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+        exclude "META-INF/*.kotlin_module"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    android {
+        sourceSets {
+            androidTest {
+                java.srcDir "src/realTest/java"
+            }
+        }
+    }
+
+    ndkVersion "21.1.6352462"
+}
+
+realm {
+    syncEnabled = false
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation("com.google.firebase:firebase-common-ktx:19.4.0") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation("com.google.firebase:firebase-common-ktx:19.4.0") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation("com.google.firebase:firebase-database-ktx:19.5.1") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation("com.google.firebase:firebase-database:19.5.1") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation("com.google.firebase:firebase-storage-ktx:19.2.0") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation("com.google.firebase:firebase-storage:19.2.0") { exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7" }
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0"
+    implementation "com.google.dagger:dagger:2.29.1"
+    implementation "com.google.dagger:dagger-android:2.29.1"
+    implementation "com.google.dagger:dagger-android-support:2.29.1"
+    kapt "com.google.dagger:dagger-compiler:2.29.1"
+    kapt "com.google.dagger:dagger-android-processor:2.29.1"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:2.29.1"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:2.29.1"
+    implementation "com.squareup.moshi:moshi:1.9.3"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.9.3"
+    implementation project(":domain")
+    implementation project(":common-java")
+    testImplementation "junit:junit:4.13.1"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+}

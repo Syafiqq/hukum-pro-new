@@ -1,0 +1,32 @@
+plugins {
+    id "java-library"
+    id "kotlin"
+    id "kotlin-kapt"
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "src/main/java"
+            srcDir "build/generated/source/kapt/main"
+            srcDir "build/generated/source/kaptKotlin/main"
+            srcDir "${buildDir.absolutePath}/generated/source/kapt/main/"
+            srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/main/"
+        }
+    }
+    test {
+        java {
+            srcDir "src/test/java"
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation "junit:junit:4.13.1"
+}

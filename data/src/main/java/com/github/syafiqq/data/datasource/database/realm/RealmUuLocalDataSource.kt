@@ -1,0 +1,162 @@
+package com.github.syafiqq.data.datasource.database.realm
+
+import com.github.syafiqq.data.datasource.database.UuLocalDataSource
+import com.github.syafiqq.data.datasource.database.entity.UuDocumentEntity
+import com.github.syafiqq.data.datasource.database.entity.UuEntity
+import com.github.syafiqq.data.datasource.database.entity.UuYearEntity
+import com.github.syafiqq.data.datasource.database.realm.di.RealmModule
+import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.kotlin.where
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+open class RealmUuLocalDataSource @Inject constructor(
+    @RealmModule.InternalRealm val internalConfig: RealmConfiguration,
+    @RealmModule.ExternalRealm val externalConfig: RealmConfiguration,
+) : UuLocalDataSource {
+    override suspend fun storeUu(uu: List<UuEntity>) {
+        withContext(Dispatchers.IO) {
+            val realm = Realm.getInstance(internalConfig)
+            realm.use { db ->
+                db.executeTransaction { transaction ->
+                    transaction.insertOrUpdate(uu)
+                }
+            }
+        }
+    }
+
+    override suspend fun storeUuYear(entity: List<UuYearEntity>) {
+        withContext(Dispatchers.IO) {
+            val realm = Realm.getInstance(internalConfig)
+            realm.use { db ->
+                db.executeTransaction { transaction ->
+                    transaction.insertOrUpdate(entity)
+                }
+            }
+        }
+    }
+
+    override suspend fun storeUuDocument(document: List<UuDocumentEntity>) {
+        withContext(Dispatchers.IO) {
+            val realm = Realm.getInstance(externalConfig)
+            realm.use { db ->
+                db.executeTransaction { transaction ->
+                    transaction.insertOrUpdate(document)
+                }
+            }
+        }
+    }
+
+    override suspend fun updateUuDocument(id: String, document: String) {
+        withContext(Dispatchers.IO) {
+            val realm = Realm.getInstance(externalConfig)
+            if (!realm.isAutoRefresh) {
+                realm.refresh()
+            }
+            val obj = realm
+                .where<UuDocumentEntity>()
+                .equalTo("id", id)
+                .findFirst()
+                ?: throw NoDataErrorException()
+            realm.use { db ->
+                db.executeTransaction {
+                    obj.document = document
+                }
+            }
+        }
+    }
+
+    override suspend fun fetchUu(id: String): UuEntity {
+        val realm = Realm.getInstance(internalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        return realm
+            .where<UuEntity>()
+            .equalTo("id", id)
+            .findFirst()
+            ?: throw NoDataErrorException()
+    }
+
+    override suspend fun fetchUuByCategoryAndYear(category: Int, year: Int): List<UuEntity> {
+        val realm = Realm.getInstance(internalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        return realm
+            .where<UuEntity>()
+            .equalTo("category", category)
+            .equalTo("year", year)
+            .findAll()
+    }
+
+    override suspend fun fetchUuDocument(id: String): UuDocumentEntity {
+        val realm = Realm.getInstance(externalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        return realm
+            .where<UuDocumentEntity>()
+            .equalTo("id", id)
+            .findFirst()
+            ?: throw NoDataErrorException()
+    }
+
+    override suspend fun fetchUuYear(category: Int): List<UuYearEntity> {
+        val realm = Realm.getInstance(internalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        return realm
+            .where<UuYearEntity>()
+            .equalTo("category", category)
+            .findAll()
+            ?: throw NoDataErrorException()
+    }
+
+    override suspend fun removeAllUu() {
+        val realm = Realm.getInstance(internalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        realm.use { db ->
+            db.executeTransaction { transaction ->
+                transaction.delete(UuEntity::class.java)
+            }
+        }
+    }
+
+    override suspend fun removeAllUuDocument() {
+        val realm = Realm.getInstance(externalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        realm.use { db ->
+            db.executeTransaction { transaction ->
+                transaction.delete(UuDocumentEntity::class.java)
+            }
+        }
+    }
+
+    override suspend fun removeAllUuYear() {
+        val realm = Realm.getInstance(internalConfig)
+        if (!realm.isAutoRefresh) {
+            realm.refresh()
+        }
+
+        realm.use { db ->
+            db.executeTransaction { transaction ->
+                transaction.delete(UuYearEntity::class.java)
+            }
+        }
+    }
+}

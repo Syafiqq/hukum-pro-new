@@ -4,10 +4,17 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.1.0"
+        classpath "com.android.tools.build:gradle:4.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
+        classpath "com.google.gms:google-services:4.3.4"
+        classpath "io.realm:realm-gradle-plugin:7.0.7"
+        classpath "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.4.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,4 +30,14 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: "scabbard.gradle"
+
+scabbard {
+    enabled true
+    failOnError true
+    fullBindingGraphValidation true
+    qualifiedNames false
+    outputFormat "svg"
 }
