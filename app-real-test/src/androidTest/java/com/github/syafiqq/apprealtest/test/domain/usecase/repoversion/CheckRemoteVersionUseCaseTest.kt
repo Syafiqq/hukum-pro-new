@@ -2,8 +2,10 @@ package com.github.syafiqq.apprealtest.test.domain.usecase.repoversion
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.syafiqq.apprealtest.test.BaseTest
-import com.github.syafiqq.data.datasource.cache.AppProfileCacheDataSource
-import com.github.syafiqq.data.datasource.remote.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.entity.toData
+import com.github.syafiqq.data.datasource.remote.firebase.contract.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.toDomain
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpToDate
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateAvailable
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateRequired
@@ -18,7 +20,6 @@ import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 @RunWith(AndroidJUnit4::class)
@@ -60,9 +61,9 @@ class CheckRemoteVersionUseCaseTest : BaseTest() {
             val remoteVersion = appProfileRemoteDataSource.fetchVersion()
             assertThat(remoteVersion, `is`(notNullValue()))
             remoteVersion.milis = 1000000
-            remoteVersion.timestamp = Date(1000000)
+            remoteVersion.timestamp = "10-10-2010 10:10:10"
 
-            appProfileCacheDataSource.storeVersion(remoteVersion)
+            appProfileCacheDataSource.storeVersion(remoteVersion.toDomain().toData())
             assertThat(appProfileRemoteDataSource.fetchVersion(), `is`(notNullValue()))
 
             val response = checkRemoteVersionUseCase.execute()
@@ -81,7 +82,7 @@ class CheckRemoteVersionUseCaseTest : BaseTest() {
             val remoteVersion = appProfileRemoteDataSource.fetchVersion()
             assertThat(remoteVersion, `is`(notNullValue()))
 
-            appProfileCacheDataSource.storeVersion(remoteVersion)
+            appProfileCacheDataSource.storeVersion(remoteVersion.toDomain().toData())
             assertThat(appProfileRemoteDataSource.fetchVersion(), `is`(notNullValue()))
 
             val response = checkRemoteVersionUseCase.execute()

@@ -1,48 +1,69 @@
 package com.github.syafiqq.data.repository
 
-import com.github.syafiqq.data.datasource.cache.UuCacheDataSource
-import com.github.syafiqq.data.datasource.database.UuLocalDataSource
-import com.github.syafiqq.data.datasource.database.entity.toData
-import com.github.syafiqq.data.datasource.remote.UuRemoteDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.UuCacheDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.entity.toData
+import com.github.syafiqq.data.datasource.database.realm.entity.toData
+import com.github.syafiqq.data.datasource.remote.firebase.contract.UuRemoteDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.toDomain
 import com.github.syafiqq.domain.contract.repository.UuRepositoryInterface
 import com.github.syafiqq.domain.entity.uu.UuEntity
 import com.github.syafiqq.domain.entity.uu.UuOrderEntity
 import com.github.syafiqq.domain.entity.uu.UuYearEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.github.syafiqq.data.datasource.remote.firebase.entity.UuEntity as DataUuEntity
+import com.github.syafiqq.data.datasource.remote.firebase.entity.UuOrderEntity as DataUuOrderEntity
 
 class UuRepository @Inject constructor(
     val uuRemoteDataSource: UuRemoteDataSource,
-    val uuLocalDataSource: UuLocalDataSource,
+    val uuLocalDataSource: com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource,
     val uuCacheDataSource: UuCacheDataSource
 ) : UuRepositoryInterface {
     override suspend fun fetchRemoteUu(filename: String): List<UuEntity> {
-        return uuRemoteDataSource.fetchUu(filename)
+        return withContext(Dispatchers.IO) {
+            uuRemoteDataSource.fetchUu(filename)
+                .map(DataUuEntity::toDomain)
+        }
     }
 
     override suspend fun removeAllUu() {
-        uuLocalDataSource.removeAllUu()
-        uuLocalDataSource.removeAllUuDocument()
+        withContext(Dispatchers.IO) {
+            uuLocalDataSource.removeAllUu()
+            uuLocalDataSource.removeAllUuDocument()
+        }
     }
 
     override suspend fun removeAllUuYear() {
-        uuLocalDataSource.removeAllUuYear()
+        withContext(Dispatchers.IO) {
+            uuLocalDataSource.removeAllUuYear()
+        }
     }
 
     override suspend fun storeUu(uu: List<UuEntity>) {
-        val dataUu = uu.map(UuEntity::toData)
-        uuLocalDataSource.storeUu(dataUu)
+        withContext(Dispatchers.IO) {
+            val dataUu = uu.map(UuEntity::toData)
+            uuLocalDataSource.storeUu(dataUu)
+        }
     }
 
     override suspend fun storeUuYear(uuYear: List<UuYearEntity>) {
-        val dataUuYear = uuYear.map(UuYearEntity::toData)
-        uuLocalDataSource.storeUuYear(dataUuYear)
+        withContext(Dispatchers.IO) {
+            val dataUuYear = uuYear.map(UuYearEntity::toData)
+            uuLocalDataSource.storeUuYear(dataUuYear)
+        }
     }
 
     override suspend fun fetchRemoteUuOrder(): List<UuOrderEntity> {
-        return uuRemoteDataSource.fetchUuOrder()
+        return withContext(Dispatchers.IO) {
+            uuRemoteDataSource.fetchUuOrder()
+                .map(DataUuOrderEntity::toDomain)
+        }
     }
 
     override suspend fun storeUuOrder(uuOrder: List<UuOrderEntity>) {
-        uuCacheDataSource.storeUuOrder(uuOrder)
+        withContext(Dispatchers.IO) {
+            uuCacheDataSource.storeUuOrder(uuOrder.map(UuOrderEntity::toData))
+        }
     }
 }

@@ -2,8 +2,9 @@ package com.github.syafiqq.apprealtest.test.domain.usecase.repoversion
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.syafiqq.apprealtest.test.BaseTest
-import com.github.syafiqq.data.datasource.cache.AppProfileCacheDataSource
-import com.github.syafiqq.data.datasource.remote.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.contract.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.toDomain
 import com.github.syafiqq.domain.usecase.repoversion.UpdateRepositoryVersionUseCase
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
@@ -37,7 +38,7 @@ class UpdateRepositoryVersionUseCaseTest : BaseTest() {
             assertThat(appProfileCacheDataSource.fetchVersion(), `is`(nullValue()))
 
             val remoteVersion = appProfileRemoteDataSource.fetchVersion()
-            updateVersionUseCase.execute(remoteVersion)
+            updateVersionUseCase.execute(remoteVersion.toDomain())
             assertThat(appProfileCacheDataSource.fetchVersion(), `is`(notNullValue()))
 
             Timber.v("CurrentLog - version - $remoteVersion")

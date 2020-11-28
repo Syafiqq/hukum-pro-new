@@ -1,3 +1,8 @@
+include ':real-test-util'
+include ':data-real-test'
+include ':datasource-remote-firebase'
+include ':datasource-database-realm'
+include ':datasource-cache-sharedpref'
 include ':app-real-test'
 include ':domain'
 include ':data'

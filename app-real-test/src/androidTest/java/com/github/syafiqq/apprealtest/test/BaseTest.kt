@@ -4,9 +4,9 @@ import com.github.syafiqq.apprealtest.AbstractBaseTest
 import com.github.syafiqq.apprealtest.di.AppComponent
 import com.github.syafiqq.apprealtest.di.DaggerAppComponent
 import com.github.syafiqq.common.contract.data.Truncatable
-import com.github.syafiqq.data.datasource.cache.AppProfileCacheDataSource
-import com.github.syafiqq.data.datasource.cache.UuCacheDataSource
-import com.github.syafiqq.data.datasource.database.UuLocalDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.UuCacheDataSource
+import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
 import io.realm.Realm
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber

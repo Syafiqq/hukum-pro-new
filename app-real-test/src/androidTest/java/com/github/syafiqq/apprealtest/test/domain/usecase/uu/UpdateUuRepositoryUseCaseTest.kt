@@ -2,9 +2,10 @@ package com.github.syafiqq.apprealtest.test.domain.usecase.uu
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.syafiqq.apprealtest.test.BaseTest
-import com.github.syafiqq.data.datasource.cache.AppProfileCacheDataSource
-import com.github.syafiqq.data.datasource.database.UuLocalDataSource
-import com.github.syafiqq.data.datasource.remote.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
+import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.contract.AppProfileRemoteDataSource
+import com.github.syafiqq.data.datasource.remote.firebase.toDomain
 import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
@@ -40,7 +41,7 @@ class UpdateUuRepositoryUseCaseTest : BaseTest() {
             val remoteVersion = appProfileRemoteDataSource.fetchVersion()
 
             assertThat(appProfileCacheDataSource.fetchVersion(), `is`(nullValue()))
-            updateUuRepositoryUseCase.execute(remoteVersion)
+            updateUuRepositoryUseCase.execute(remoteVersion.toDomain())
             assertThat(appProfileCacheDataSource.fetchVersion(), `is`(nullValue()))
         }
     }
@@ -51,7 +52,7 @@ class UpdateUuRepositoryUseCaseTest : BaseTest() {
             val remoteVersion = appProfileRemoteDataSource.fetchVersion()
 
             assertThat(uuLocalDataSource.fetchUuYear(1), `is`(empty()))
-            updateUuRepositoryUseCase.execute(remoteVersion)
+            updateUuRepositoryUseCase.execute(remoteVersion.toDomain())
             assertThat(uuLocalDataSource.fetchUuYear(1), `is`(not(empty())))
         }
     }

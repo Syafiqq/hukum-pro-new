@@ -2,10 +2,10 @@ package com.github.syafiqq.apprealtest.test.domain.usecase.uu
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.github.syafiqq.apprealtest.test.BaseTest
-import com.github.syafiqq.data.datasource.database.UuLocalDataSource
-import com.github.syafiqq.data.datasource.database.entity.UuDocumentEntity
-import com.github.syafiqq.data.datasource.database.entity.UuEntity
-import com.github.syafiqq.data.datasource.database.entity.UuYearEntity
+import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
+import com.github.syafiqq.data.datasource.database.realm.entity.UuDocumentEntity
+import com.github.syafiqq.data.datasource.database.realm.entity.UuEntity
+import com.github.syafiqq.data.datasource.database.realm.entity.UuYearEntity
 import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
 import com.github.syafiqq.domain.usecase.uu.DeleteExistingUuRepositoryUseCase
 import kotlinx.coroutines.runBlocking
