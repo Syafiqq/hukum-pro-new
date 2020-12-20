@@ -1,6 +1,6 @@
 package com.github.syafiqq.apprealtest.test.domain.usecase.repoversion
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.github.syafiqq.apprealtest.domain.usecase.ClearAppUseCase
 import com.github.syafiqq.apprealtest.test.BaseTest
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
 import com.github.syafiqq.data.datasource.cache.sharedpref.entity.toData
@@ -11,19 +11,24 @@ import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateAvail
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateRequired
 import com.github.syafiqq.domain.usecase.repoversion.CheckRemoteVersionUseCase
 import com.github.syafiqq.domain.usecase.repoversion.InvalidRepositoryVersionException
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import timber.log.Timber
 import javax.inject.Inject
 
-@RunWith(AndroidJUnit4::class)
+@HiltAndroidTest
 class CheckRemoteVersionUseCaseTest : BaseTest() {
+    @Inject
+    lateinit var clearAppUseCase: ClearAppUseCase
+
     @Inject
     lateinit var appProfileCacheDataSource: AppProfileCacheDataSource
 
@@ -33,10 +38,14 @@ class CheckRemoteVersionUseCaseTest : BaseTest() {
     @Inject
     lateinit var checkRemoteVersionUseCase: CheckRemoteVersionUseCase
 
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
     @Before
     override fun setUp() {
         super.setUp()
-        appComponent.inject(this)
+        hiltRule.inject()
+        clearAppUseCase.truncateSavedStorage()
     }
 
     @Test

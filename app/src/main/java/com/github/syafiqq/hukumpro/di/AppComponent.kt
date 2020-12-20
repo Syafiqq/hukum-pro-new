@@ -1,4 +1,4 @@
-package com.github.syafiqq.apprealtest.di
+package com.github.syafiqq.hukumpro.di
 
 import android.content.Context
 import com.github.syafiqq.data.datasource.cache.sharedpref.di.SharedPreferenceModule
@@ -9,46 +9,31 @@ import com.github.syafiqq.domain.di.binds.RepositoryVersionUseCaseBinds
 import com.github.syafiqq.domain.di.binds.UuRepositoryUseCaseBinds
 import com.github.syafiqq.realtestutil.data.di.CacheDataSourceBinds
 import com.github.syafiqq.realtestutil.data.di.DatabaseDataSourceBinds
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.BindsInstance
+import dagger.Component
+import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
-@Module
-object AppContextModule {
-    @Provides
-    fun provideAppContext(@ApplicationContext context: Context): Context {
-        return context
-    }
-}
-
-@InstallIn(ApplicationComponent::class)
-@Module(
-    includes = [
+@Singleton
+@Component(
+    modules = [
+        //Data
         RealmModule::class,
         SharedPreferenceModule::class,
         RemoteDataSourceBinds::class,
         DatabaseDataSourceBinds::class,
         CacheDataSourceBinds::class,
-    ]
-)
-object DataLayerModule
 
-@InstallIn(ApplicationComponent::class)
-@Module(
-    includes = [
+        //Data Domain Inversion
         DomainRepositoryBinds::class,
-    ]
-)
-object DataDomainLayerInversionModule
 
-@InstallIn(ApplicationComponent::class)
-@Module(
-    includes = [
+        //Domain
         RepositoryVersionUseCaseBinds::class,
         UuRepositoryUseCaseBinds::class,
     ]
 )
-object DomainLayerModule
+interface AppComponent {
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance applicationContext: Context): AppComponent
+    }
+}
