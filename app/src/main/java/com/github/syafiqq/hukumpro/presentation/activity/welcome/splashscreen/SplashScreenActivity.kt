@@ -37,7 +37,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_welcome_splashscreen)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.root, SplashScreenFragment.newInstance())
+                .replace(R.id.vw_content, SplashScreenFragment.newInstance())
                 .commitNow()
         }
 
@@ -66,7 +66,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        vwContent = findViewById(R.id.root)
+        vwContent = findViewById(R.id.vw_content)
     }
 
     private fun initData() {
