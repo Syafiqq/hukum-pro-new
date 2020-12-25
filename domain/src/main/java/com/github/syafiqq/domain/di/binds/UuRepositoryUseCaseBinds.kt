@@ -1,9 +1,6 @@
 package com.github.syafiqq.domain.di.binds
 
-import com.github.syafiqq.domain.usecase.uu.DeleteExistingRepositoryUseCaseImpl
-import com.github.syafiqq.domain.usecase.uu.DeleteExistingUuRepositoryUseCase
-import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
-import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCaseImpl
+import com.github.syafiqq.domain.usecase.uu.*
 import dagger.Binds
 import dagger.Module
 
@@ -14,4 +11,7 @@ abstract class UuRepositoryUseCaseBinds {
 
     @Binds
     abstract fun bindUpdateUuRepositoryUseCase(concrete: UpdateUuRepositoryUseCaseImpl): UpdateUuRepositoryUseCase
+
+    @Binds
+    abstract fun bindUpdateUuOrderUseCase(concrete: UpdateUuOrderUseCaseImpl): UpdateUuOrderUseCase
 }
