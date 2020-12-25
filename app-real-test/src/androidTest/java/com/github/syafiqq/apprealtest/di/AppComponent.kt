@@ -8,6 +8,7 @@ import com.github.syafiqq.data.di.DomainRepositoryBinds
 import com.github.syafiqq.domain.di.binds.RepositoryVersionUseCaseBinds
 import com.github.syafiqq.domain.di.binds.UuRepositoryUseCaseBinds
 import com.github.syafiqq.realtestutil.di.CacheDataSourceBinds
+import com.github.syafiqq.realtestutil.di.ClearLocalDataBinds
 import com.github.syafiqq.realtestutil.di.DatabaseDataSourceBinds
 import dagger.Module
 import dagger.Provides
@@ -52,3 +53,11 @@ object DataDomainLayerInversionModule
     ]
 )
 object DomainLayerModule
+
+@InstallIn(ApplicationComponent::class)
+@Module(
+    includes = [
+        ClearLocalDataBinds::class,
+    ]
+)
+object TestingModule

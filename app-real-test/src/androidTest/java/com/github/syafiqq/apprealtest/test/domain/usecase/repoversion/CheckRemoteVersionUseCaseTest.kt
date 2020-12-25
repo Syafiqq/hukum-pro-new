@@ -1,6 +1,5 @@
 package com.github.syafiqq.apprealtest.test.domain.usecase.repoversion
 
-import com.github.syafiqq.apprealtest.domain.usecase.ClearAppUseCase
 import com.github.syafiqq.apprealtest.test.BaseTest
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
 import com.github.syafiqq.data.datasource.cache.sharedpref.entity.toData
@@ -11,6 +10,7 @@ import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateAvail
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateRequired
 import com.github.syafiqq.domain.usecase.repoversion.CheckRemoteVersionUseCase
 import com.github.syafiqq.domain.usecase.repoversion.InvalidRepositoryVersionException
+import com.github.syafiqq.realtestutil.domain.usecase.ClearLocalDataUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 class CheckRemoteVersionUseCaseTest : BaseTest() {
     @Inject
-    lateinit var clearAppUseCase: ClearAppUseCase
+    lateinit var clearAppUseCase: ClearLocalDataUseCase
 
     @Inject
     lateinit var appProfileCacheDataSource: AppProfileCacheDataSource
@@ -45,7 +45,9 @@ class CheckRemoteVersionUseCaseTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         hiltRule.inject()
-        clearAppUseCase.truncateSavedStorage()
+        runBlocking {
+            clearAppUseCase.execute()
+        }
     }
 
     @Test

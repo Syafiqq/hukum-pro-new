@@ -1,11 +1,11 @@
 package com.github.syafiqq.apprealtest.test.domain.usecase.repoversion
 
-import com.github.syafiqq.apprealtest.domain.usecase.ClearAppUseCase
 import com.github.syafiqq.apprealtest.test.BaseTest
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
 import com.github.syafiqq.data.datasource.remote.firebase.contract.AppProfileRemoteDataSource
 import com.github.syafiqq.data.datasource.remote.firebase.toDomain
 import com.github.syafiqq.domain.usecase.repoversion.UpdateRepositoryVersionUseCase
+import com.github.syafiqq.realtestutil.domain.usecase.ClearLocalDataUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 class UpdateRepositoryVersionUseCaseTest : BaseTest() {
     @Inject
-    lateinit var clearAppUseCase: ClearAppUseCase
+    lateinit var clearAppUseCase: ClearLocalDataUseCase
 
     @Inject
     lateinit var appProfileCacheDataSource: AppProfileCacheDataSource
@@ -38,7 +38,9 @@ class UpdateRepositoryVersionUseCaseTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         hiltRule.inject()
-        clearAppUseCase.truncateSavedStorage()
+        runBlocking {
+            clearAppUseCase.execute()
+        }
     }
 
     @Test

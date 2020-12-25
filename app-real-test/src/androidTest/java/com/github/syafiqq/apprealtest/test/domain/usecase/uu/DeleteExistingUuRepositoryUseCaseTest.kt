@@ -1,6 +1,5 @@
 package com.github.syafiqq.apprealtest.test.domain.usecase.uu
 
-import com.github.syafiqq.apprealtest.domain.usecase.ClearAppUseCase
 import com.github.syafiqq.apprealtest.test.BaseTest
 import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
 import com.github.syafiqq.data.datasource.database.realm.entity.UuDocumentEntity
@@ -8,6 +7,7 @@ import com.github.syafiqq.data.datasource.database.realm.entity.UuEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuYearEntity
 import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
 import com.github.syafiqq.domain.usecase.uu.DeleteExistingUuRepositoryUseCase
+import com.github.syafiqq.realtestutil.domain.usecase.ClearLocalDataUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
     @Inject
-    lateinit var clearAppUseCase: ClearAppUseCase
+    lateinit var clearAppUseCase: ClearLocalDataUseCase
 
     @Inject
     lateinit var uuLocalDataSource: UuLocalDataSource
@@ -36,7 +36,9 @@ class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         hiltRule.inject()
-        clearAppUseCase.truncateSavedStorage()
+        runBlocking {
+            clearAppUseCase.execute()
+        }
     }
 
     @Test
