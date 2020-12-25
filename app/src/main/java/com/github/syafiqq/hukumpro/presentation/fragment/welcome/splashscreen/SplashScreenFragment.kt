@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.github.syafiqq.hukumpro.R
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,4 +26,10 @@ class SplashScreenFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_welcome_splashscreen, container, false)
     }
 
+    override fun onStart() {
+        super.onStart()
+        lifecycleScope.launchWhenStarted {
+            viewModel.initAppData()
+        }
+    }
 }

@@ -26,7 +26,7 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
 
     }
 
-    suspend fun checkVersion() {
+    suspend fun initAppData() {
         try {
             val versionTo = checkLocalVersion()
             if (versionTo == null) {
