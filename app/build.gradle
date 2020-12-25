@@ -65,6 +65,7 @@ dependencies {
     implementation project(":data")
     implementation project(":domain")
     implementation project(":real-test-util")
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.29-alpha"
 
