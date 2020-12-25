@@ -6,4 +6,8 @@ import com.github.syafiqq.domain.usecase.repoversion.CheckLocalVersionUseCase
 
 class SplashScreenFragmentViewModel @ViewModelInject constructor(
     var checkLocalVersionUseCase: CheckLocalVersionUseCase
-) : ViewModel()
+) : ViewModel() {
+    suspend fun checkVersion() {
+
+    }
+}
