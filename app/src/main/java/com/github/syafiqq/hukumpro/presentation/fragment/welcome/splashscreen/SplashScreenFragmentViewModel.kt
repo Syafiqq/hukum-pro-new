@@ -17,10 +17,15 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
     val updateUuOrderUseCase: UpdateUuOrderUseCase,
     val updateRepositoryVersionUseCase: UpdateRepositoryVersionUseCase,
 ) : ViewModel() {
-    val _error: MutableLiveData<Exception> = MutableLiveData()
+    private val _error: MutableLiveData<Exception> = MutableLiveData()
+    private val _loadingMessage: MutableLiveData<String> = MutableLiveData()
     val error: LiveData<Exception>
         get() {
             return _error
+        }
+    val loadingMessage: LiveData<String>
+        get() {
+            return _loadingMessage
         }
 
     private fun actionNoUpdateNeeded() {
