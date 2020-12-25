@@ -9,6 +9,7 @@ import com.github.syafiqq.domain.usecase.repoversion.CheckLocalVersionUseCase
 import com.github.syafiqq.domain.usecase.repoversion.UpdateRepositoryVersionUseCase
 import com.github.syafiqq.domain.usecase.uu.UpdateUuOrderUseCase
 import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
+import timber.log.Timber
 
 class SplashScreenFragmentViewModel @ViewModelInject constructor(
     val checkLocalVersionUseCase: CheckLocalVersionUseCase,
@@ -26,6 +27,10 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
 
     }
 
+    private fun actionUpdateSuccess() {
+
+    }
+
     suspend fun initAppData() {
         try {
             val versionTo = checkLocalVersion()
@@ -37,8 +42,9 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
             updateUuRepositoryUseCase.execute(versionTo.to)
             updateUuOrderUseCase.execute()
             updateRepositoryVersionUseCase.execute(versionTo.to)
+            actionUpdateSuccess()
         } catch (e: Exception) {
-
+            Timber.e(e)
         }
     }
 
