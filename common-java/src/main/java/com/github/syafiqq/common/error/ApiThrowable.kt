@@ -1,9 +1,8 @@
-package com.github.syafiqq.common
+package com.github.syafiqq.common.error
 
 open class ApiThrowable(
     override val message: String?,
     override val cause: Throwable?,
-    open val retryable: Boolean = false
 ) : Throwable(message, cause) {
     constructor(message: String?) : this(message, null)
 
