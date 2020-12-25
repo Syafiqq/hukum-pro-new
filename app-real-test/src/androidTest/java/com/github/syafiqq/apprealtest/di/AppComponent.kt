@@ -7,8 +7,8 @@ import com.github.syafiqq.data.datasource.remote.firebase.di.RemoteDataSourceBin
 import com.github.syafiqq.data.di.DomainRepositoryBinds
 import com.github.syafiqq.domain.di.binds.RepositoryVersionUseCaseBinds
 import com.github.syafiqq.domain.di.binds.UuRepositoryUseCaseBinds
-import com.github.syafiqq.realtestutil.data.di.CacheDataSourceBinds
-import com.github.syafiqq.realtestutil.data.di.DatabaseDataSourceBinds
+import com.github.syafiqq.realtestutil.di.CacheDataSourceBinds
+import com.github.syafiqq.realtestutil.di.DatabaseDataSourceBinds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

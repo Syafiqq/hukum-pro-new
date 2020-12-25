@@ -10,8 +10,8 @@ import com.github.syafiqq.datarealtest.test.datasource.remote.firebasedb.GetOrde
 import com.github.syafiqq.datarealtest.test.datasource.remote.firebasedb.GetVersionAsyncTest
 import com.github.syafiqq.datarealtest.test.datasource.remote.firebasestorage.GetUuTest
 import com.github.syafiqq.datarealtest.test.di.RemoteDataSourceBindsTest
-import com.github.syafiqq.realtestutil.data.di.CacheDataSourceBinds
-import com.github.syafiqq.realtestutil.data.di.DatabaseDataSourceBinds
+import com.github.syafiqq.realtestutil.di.CacheDataSourceBinds
+import com.github.syafiqq.realtestutil.di.DatabaseDataSourceBinds
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

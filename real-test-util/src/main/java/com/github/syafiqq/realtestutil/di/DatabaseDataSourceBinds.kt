@@ -1,4 +1,4 @@
-package com.github.syafiqq.realtestutil.data.di
+package com.github.syafiqq.realtestutil.di
 
 import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
 import com.github.syafiqq.realtestutil.data.datasource.database.realm.TruncatableRealmUuLocalDataSource

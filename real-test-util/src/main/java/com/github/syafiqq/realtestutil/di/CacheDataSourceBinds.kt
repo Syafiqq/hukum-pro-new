@@ -1,4 +1,4 @@
-package com.github.syafiqq.realtestutil.data.di
+package com.github.syafiqq.realtestutil.di
 
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCacheDataSource
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.UuCacheDataSource
