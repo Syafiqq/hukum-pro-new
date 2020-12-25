@@ -33,7 +33,7 @@ object RealmModule {
             .build()
         try {
             Realm.getInstance(configuration)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Timber.e(e)
             Realm.deleteRealm(configuration)
             Realm.getInstance(configuration)
@@ -57,7 +57,7 @@ object RealmModule {
             .build()
         try {
             Realm.getInstance(configuration)
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             Timber.e(e)
             Realm.deleteRealm(configuration)
             Realm.getInstance(configuration)

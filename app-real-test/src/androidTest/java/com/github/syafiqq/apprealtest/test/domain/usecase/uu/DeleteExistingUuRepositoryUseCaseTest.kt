@@ -69,12 +69,12 @@ class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
             assertThat(uuLocalDataSource.fetchUuYear(1), `is`(empty()))
             try {
                 assertThat(uuLocalDataSource.fetchUuDocument("1"), `is`(nullValue()))
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
             }
             try {
                 assertThat(uuLocalDataSource.fetchUu("1"), `is`(nullValue()))
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
             }
         }

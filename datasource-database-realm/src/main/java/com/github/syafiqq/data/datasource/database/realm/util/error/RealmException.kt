@@ -1,9 +1,6 @@
 package com.github.syafiqq.data.datasource.database.realm.util.error
 
-sealed class RealmException(
-    override val message: String?,
-    override val cause: Throwable?,
-) : Throwable(message, cause)
+import com.github.syafiqq.common.error.DefinedException
 
 class NoDataErrorException(cause: Throwable? = null) :
-    RealmException("Data Not Found", cause)
+    DefinedException("Data Not Found", cause)

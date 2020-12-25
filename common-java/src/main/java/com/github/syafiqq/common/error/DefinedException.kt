@@ -1,9 +1,9 @@
 package com.github.syafiqq.common.error
 
-open class ApiThrowable(
+open class DefinedException(
     override val message: String?,
     override val cause: Throwable?,
-) : DefinedThrowable(message, cause) {
+) : Exception(message, cause) {
     constructor(message: String?) : this(message, null)
 
     constructor(cause: kotlin.Throwable?) : this(cause?.toString(), cause)
