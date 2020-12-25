@@ -7,10 +7,14 @@ import androidx.lifecycle.ViewModel
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateRequired
 import com.github.syafiqq.domain.usecase.repoversion.CheckLocalVersionUseCase
 import com.github.syafiqq.domain.usecase.repoversion.UpdateRepositoryVersionUseCase
+import com.github.syafiqq.domain.usecase.uu.UpdateUuOrderUseCase
+import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
 
 class SplashScreenFragmentViewModel @ViewModelInject constructor(
-    var checkLocalVersionUseCase: CheckLocalVersionUseCase,
-    var updateRepositoryVersionUseCase: UpdateRepositoryVersionUseCase
+    val checkLocalVersionUseCase: CheckLocalVersionUseCase,
+    val updateUuRepositoryUseCase: UpdateUuRepositoryUseCase,
+    val updateUuOrderUseCase: UpdateUuOrderUseCase,
+    val updateRepositoryVersionUseCase: UpdateRepositoryVersionUseCase,
 ) : ViewModel() {
     val _error: MutableLiveData<Exception> = MutableLiveData()
     val error: LiveData<Exception>
@@ -24,12 +28,15 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
 
     suspend fun checkVersion() {
         try {
-            val localVersion = checkLocalVersion()
-            if (localVersion == null) {
+            val versionTo = checkLocalVersion()
+            if (versionTo == null) {
                 actionNoUpdateNeeded()
                 return
             }
 
+            updateUuRepositoryUseCase.execute(versionTo.to)
+            updateUuOrderUseCase.execute()
+            updateRepositoryVersionUseCase.execute(versionTo.to)
         } catch (e: Exception) {
 
         }
