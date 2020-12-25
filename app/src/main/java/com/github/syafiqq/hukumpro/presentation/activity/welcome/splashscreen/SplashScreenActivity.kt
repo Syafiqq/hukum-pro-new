@@ -42,9 +42,6 @@ class SplashScreenActivity : AppCompatActivity() {
         }
 
         initViews()
-        initData()
-        initEvents()
-        initViewModels()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -67,15 +64,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun initViews() {
         vwContent = findViewById(R.id.vw_content)
-    }
-
-    private fun initData() {
-    }
-
-    private fun initEvents() {
-    }
-
-    private fun initViewModels() {
     }
 
     fun gotoMainMenu() {
