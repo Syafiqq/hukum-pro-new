@@ -36,15 +36,13 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
     }
 
     private suspend fun checkLocalVersion(): RepositoryVersionUpdateRequired? {
-        try {
-            when (checkLocalVersionUseCase.execute()) {
-                is RepositoryVersionUpdateRequired -> {
-                }
-                else -> {
-                }
+        return when (val result = checkLocalVersionUseCase.execute()) {
+            is RepositoryVersionUpdateRequired -> {
+                result
             }
-        } catch (e: Exception) {
-
+            else -> {
+                null
+            }
         }
     }
 }
