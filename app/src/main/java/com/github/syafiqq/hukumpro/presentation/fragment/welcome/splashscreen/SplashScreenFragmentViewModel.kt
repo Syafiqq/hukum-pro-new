@@ -2,7 +2,6 @@ package com.github.syafiqq.hukumpro.presentation.fragment.welcome.splashscreen
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateAvailable
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpdateRequired
 import com.github.syafiqq.domain.usecase.repoversion.CheckLocalVersionUseCase
 
@@ -13,8 +12,6 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
         try {
             when (checkLocalVersionUseCase.execute()) {
                 is RepositoryVersionUpdateRequired -> {
-                }
-                is RepositoryVersionUpdateAvailable -> {
                 }
                 else -> {
                 }
