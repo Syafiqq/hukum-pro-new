@@ -13,4 +13,9 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="ThemeOverlay.HukumPro.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/purple_500</item>
+        <item name="fullscreenTextColor">@color/white</item>
+    </style>
 </resources>
