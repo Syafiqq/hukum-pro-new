@@ -36,14 +36,24 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
 
     }
 
+    private fun actionDownloadData() {
+
+    }
+
+    private fun actionCheckLocalVersion() {
+
+    }
+
     suspend fun initAppData() {
         try {
+            actionCheckLocalVersion()
             val versionTo = checkLocalVersion()
             if (versionTo == null) {
                 actionNoUpdateNeeded()
                 return
             }
 
+            actionDownloadData()
             updateUuRepositoryUseCase.execute(versionTo.to)
             updateUuOrderUseCase.execute()
             updateRepositoryVersionUseCase.execute(versionTo.to)
