@@ -1,6 +1,7 @@
 package com.github.syafiqq.data.datasource.database.realm.di
 
 import android.content.Context
+import com.github.syafiqq.common.error.DefinedException
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
@@ -46,7 +47,7 @@ object RealmModule {
     @Provides
     fun provideExternalRealmConfiguration(context: Context): RealmConfiguration {
         val file =
-            context.getExternalFilesDir(null) ?: throw RuntimeException("No Storage provided")
+            context.getExternalFilesDir(null) ?: throw DefinedException("No Storage provided")
         val configuration = RealmConfiguration
             .Builder()
             .directory(file)
