@@ -7,5 +7,5 @@ object Retry : ViewRetryableOptions()
 class ViewRetryableError(
     override var message: String,
     override var error: Throwable,
-    var callback: (ViewRetryableOptions) -> Unit
+    var callback: suspend (ViewRetryableOptions) -> Unit
 ) : RuntimeException(message, error), ViewError

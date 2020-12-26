@@ -8,7 +8,11 @@ import com.github.syafiqq.hukumpro.common.error.ViewCompletableError
 import com.github.syafiqq.hukumpro.common.error.ViewRetryableError
 
 object ViewModelErrorHandler {
-    fun handleDefaultError(e: Exception, onRetry: () -> Unit, onComplete: () -> Unit): Exception {
+    fun handleDefaultError(
+        e: Exception,
+        onRetry: suspend () -> Unit,
+        onComplete: suspend () -> Unit
+    ): Exception {
         return when (e) {
             is DefinedException -> ViewCompletableError(e.message, e, callback = onComplete)
             is ApiException -> ViewRetryableError(e.message, e) {
