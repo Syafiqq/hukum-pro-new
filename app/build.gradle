@@ -66,6 +66,8 @@ dependencies {
     implementation project(":domain")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
     kapt "com.google.dagger:hilt-android-compiler:2.29-alpha"
     kapt "androidx.hilt:hilt-compiler:1.0.0-alpha02"
 
