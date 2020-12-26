@@ -9,6 +9,7 @@ import com.github.syafiqq.domain.usecase.repoversion.CheckLocalVersionUseCase
 import com.github.syafiqq.domain.usecase.repoversion.UpdateRepositoryVersionUseCase
 import com.github.syafiqq.domain.usecase.uu.UpdateUuOrderUseCase
 import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
+import com.github.syafiqq.hukumpro.R
 import timber.log.Timber
 
 class SplashScreenFragmentViewModel @ViewModelInject constructor(
@@ -18,30 +19,34 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
     val updateRepositoryVersionUseCase: UpdateRepositoryVersionUseCase,
 ) : ViewModel() {
     private val _error: MutableLiveData<Exception> = MutableLiveData()
-    private val _loadingMessage: MutableLiveData<String> = MutableLiveData()
+    private val _loadingMessage: MutableLiveData<Int> = MutableLiveData()
     val error: LiveData<Exception>
         get() {
             return _error
         }
-    val loadingMessage: LiveData<String>
+    val loadingMessage: LiveData<Int>
         get() {
             return _loadingMessage
         }
 
     private fun actionNoUpdateNeeded() {
-
+        _loadingMessage.postValue(R.string.version_up_to_date)
     }
 
     private fun actionUpdateSuccess() {
-
+        _loadingMessage.postValue(R.string.version_update_success)
     }
 
     private fun actionDownloadData() {
-
+        _loadingMessage.postValue(R.string.action_downloading)
     }
 
     private fun actionCheckLocalVersion() {
+        _loadingMessage.postValue(R.string.version_check)
+    }
 
+    private fun actionUpdateFailed() {
+        _loadingMessage.postValue(R.string.version_update_failed)
     }
 
     suspend fun initAppData() {
@@ -59,6 +64,7 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
             updateRepositoryVersionUseCase.execute(versionTo.to)
             actionUpdateSuccess()
         } catch (e: Exception) {
+            actionUpdateFailed()
             Timber.e(e)
         }
     }

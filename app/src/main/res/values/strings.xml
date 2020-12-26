@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HukumPro</string>
+    <string name="action_downloading">Downloading</string>
+    <string name="version_check">Check Version</string>
+    <string name="version_up_to_date">Up to date</string>
+    <string name="version_update_success">Update success</string>
+    <string name="version_update_failed">Update failed</string>
 </resources>
