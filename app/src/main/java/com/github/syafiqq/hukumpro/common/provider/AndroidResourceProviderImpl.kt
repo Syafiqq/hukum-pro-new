@@ -7,11 +7,9 @@ import javax.inject.Inject
 class AndroidResourceProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : AndroidResourceProvider {
-    override fun getString(stringResId: Int) {
+    override fun getString(stringResId: Int): String =
         context.getString(stringResId)
-    }
 
-    override fun getString(stringResId: Int, vararg formatArgs: Any) {
+    override fun getString(stringResId: Int, vararg formatArgs: Any): String =
         context.getString(stringResId, formatArgs)
-    }
 }
