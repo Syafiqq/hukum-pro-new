@@ -1,12 +1,14 @@
 package com.github.syafiqq.common.error
 
 open class ApiException(
-    override val message: String?,
+    override val message: String,
     override val cause: Throwable?,
 ) : DefinedException(message, cause) {
-    constructor(message: String?) : this(message, null)
+    constructor(message: String?) : this(message ?: ErrorConstant.defaultErrorMessage, null)
 
-    constructor(cause: kotlin.Throwable?) : this(cause?.toString(), cause)
+    constructor(cause: kotlin.Throwable?) : this(
+        cause?.toString() ?: ErrorConstant.defaultErrorMessage, cause
+    )
 
-    constructor() : this(null, null)
+    constructor() : this(null ?: ErrorConstant.defaultErrorMessage, null)
 }
