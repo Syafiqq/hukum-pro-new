@@ -54,13 +54,13 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                                     .next()
                                     .getValue(RepositoryVersionEntity::class.java)
                                 if (version == null) {
-                                    continuation.resumeWithException(NoDataErrorException())
+                                    continuation.resumeWithException(NoDataErrorException)
                                 } else {
                                     version.let(continuation::resume)
                                 }
                                 return
                             }
-                            continuation.resumeWithException(NoDataErrorException())
+                            continuation.resumeWithException(NoDataErrorException)
                         }
                     })
             }
@@ -111,7 +111,7 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                     .getBytes(Long.MAX_VALUE).addOnSuccessListener {
                         val uu = it?.toListUUEntity()
                         if (uu == null) {
-                            continuation.resumeWithException(NoDataErrorException())
+                            continuation.resumeWithException(NoDataErrorException)
                         } else {
                             continuation.resume(uu)
                         }

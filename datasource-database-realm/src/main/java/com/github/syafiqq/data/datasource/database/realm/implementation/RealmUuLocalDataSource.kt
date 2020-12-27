@@ -59,7 +59,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuDocumentEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException()
+                ?: throw NoDataErrorException
             realm.use { db ->
                 db.executeTransaction {
                     obj.document = document
@@ -79,7 +79,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException()
+                ?: throw NoDataErrorException
         }
     }
 
@@ -109,7 +109,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuDocumentEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException()
+                ?: throw NoDataErrorException
         }
     }
 
@@ -124,7 +124,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuYearEntity>()
                 .equalTo("category", category)
                 .findAll()
-                ?: throw NoDataErrorException()
+                ?: throw NoDataErrorException
         }
     }
 
