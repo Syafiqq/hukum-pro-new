@@ -6,7 +6,7 @@ import com.github.syafiqq.data.datasource.remote.firebase.entity.RepositoryVersi
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuEntity
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuOrderEntity
 import com.github.syafiqq.data.datasource.remote.firebase.util.FirebaseConstants
-import com.github.syafiqq.data.datasource.remote.firebase.util.error.NoDataErrorException
+import com.github.syafiqq.data.datasource.remote.firebase.util.error.NoDataException
 import com.github.syafiqq.data.datasource.remote.firebase.util.error.ParseDataException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -54,13 +54,13 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                                     .next()
                                     .getValue(RepositoryVersionEntity::class.java)
                                 if (version == null) {
-                                    continuation.resumeWithException(NoDataErrorException)
+                                    continuation.resumeWithException(NoDataException)
                                 } else {
                                     version.let(continuation::resume)
                                 }
                                 return
                             }
-                            continuation.resumeWithException(NoDataErrorException)
+                            continuation.resumeWithException(NoDataException)
                         }
                     })
             }
@@ -111,7 +111,7 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                     .getBytes(Long.MAX_VALUE).addOnSuccessListener {
                         val uu = it?.toListUUEntity()
                         if (uu == null) {
-                            continuation.resumeWithException(NoDataErrorException)
+                            continuation.resumeWithException(NoDataException)
                         } else {
                             continuation.resume(uu)
                         }
@@ -129,7 +129,10 @@ private fun ByteArray.toListUUEntity(): List<UuEntity> {
     val jsonAdapter: JsonAdapter<List<UuEntity>> =
         moshi.adapter(type)
 
-    return jsonAdapter
-        .fromJson(this.toString(Charset.defaultCharset()))
-        ?: throw ParseDataException()
+    return try {
+        jsonAdapter
+            .fromJson(this.toString(Charset.defaultCharset())) ?: throw ParseDataException()
+    } catch (e: Exception) {
+        throw ParseDataException(e)
+    }
 }
