@@ -13,7 +13,7 @@ enum class ErrorCode(val code: String) {
     ERROR_UNKNOWN("00-000")
 }
 
-object DefinedExceptionFactory {
+object ExceptionFactory {
     fun createDefinedException(code: ErrorCode, cause: Throwable? = null) =
         DefinedException(message = code.name, code = code.code, cause = cause)
 
