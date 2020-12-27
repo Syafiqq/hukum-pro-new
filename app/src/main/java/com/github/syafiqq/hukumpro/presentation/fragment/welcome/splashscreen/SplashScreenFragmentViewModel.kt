@@ -11,8 +11,8 @@ import com.github.syafiqq.domain.usecase.uu.UpdateUuOrderUseCase
 import com.github.syafiqq.domain.usecase.uu.UpdateUuRepositoryUseCase
 import com.github.syafiqq.hukumpro.R
 import com.github.syafiqq.hukumpro.common.provider.AndroidResourceProvider
+import com.github.syafiqq.hukumpro.common.util.LogHelper
 import com.github.syafiqq.hukumpro.common.util.ViewModelErrorHandler
-import timber.log.Timber
 
 class SplashScreenFragmentViewModel @ViewModelInject constructor(
     val checkLocalVersionUseCase: CheckLocalVersionUseCase,
@@ -64,7 +64,7 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
             updateRepositoryVersionUseCase.execute(versionTo.to)
             actionUpdateSuccess()
         } catch (e: Exception) {
-            Timber.e(e)
+            LogHelper.e(e)
             actionUpdateFailed()
             _error.postValue(
                 ViewModelErrorHandler.handleDefaultError(

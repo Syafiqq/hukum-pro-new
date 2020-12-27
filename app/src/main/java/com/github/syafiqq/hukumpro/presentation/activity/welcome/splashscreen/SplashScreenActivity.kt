@@ -9,9 +9,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.github.syafiqq.hukumpro.R
+import com.github.syafiqq.hukumpro.common.util.LogHelper
 import com.github.syafiqq.hukumpro.presentation.fragment.welcome.splashscreen.SplashScreenFragment
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class SplashScreenActivity : AppCompatActivity() {
@@ -45,20 +45,20 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        Timber.v("CurrentLog - onPostCreate")
+        LogHelper.v("CurrentLog - onPostCreate")
         super.onPostCreate(savedInstanceState)
         hide()
     }
 
     override fun onStart() {
-        Timber.v("CurrentLog - onStart")
+        LogHelper.v("CurrentLog - onStart")
         super.onStart()
         lifecycleScope.launchWhenStarted {
         }
     }
 
     override fun onStop() {
-        Timber.v("CurrentLog - onStop")
+        LogHelper.v("CurrentLog - onStop")
         super.onStop()
     }
 
