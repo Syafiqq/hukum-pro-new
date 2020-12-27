@@ -1,6 +1,6 @@
 package com.github.syafiqq.common.error
 
-enum class ErrorCode(code: String) {
+enum class ErrorCode(val code: String) {
     // SYSTEM
     ERROR_SYSTEM_NO_SHARED_PREFERENCES_INSTANCE("01-001"),
     ERROR_SYSTEM_NO_LOCAL_STORAGE_AVAILABLE("01-002"),
@@ -11,4 +11,8 @@ enum class ErrorCode(code: String) {
     ERROR_DATA_PARSE_DATA_FAILURE("02-003"),
 
     ERROR_UNKNOWN("00-000")
+}
+
+object DefinedExceptionFactory {
+    fun create(code: ErrorCode) = DefinedException(message = code.name, code = code.code)
 }
