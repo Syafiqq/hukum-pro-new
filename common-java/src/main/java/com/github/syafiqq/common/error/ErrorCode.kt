@@ -14,5 +14,9 @@ enum class ErrorCode(val code: String) {
 }
 
 object DefinedExceptionFactory {
-    fun create(code: ErrorCode) = DefinedException(message = code.name, code = code.code)
+    fun createDefinedException(code: ErrorCode, cause: Throwable? = null) =
+        DefinedException(message = code.name, code = code.code, cause = cause)
+
+    fun createApiException(code: ErrorCode, cause: Throwable? = null) =
+        ApiException(message = code.name, code = code.code, cause = cause)
 }
