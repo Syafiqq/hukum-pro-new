@@ -5,7 +5,7 @@ import com.github.syafiqq.data.datasource.database.realm.di.RealmModule
 import com.github.syafiqq.data.datasource.database.realm.entity.UuDocumentEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuYearEntity
-import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
+import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataException
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.where
@@ -59,7 +59,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuDocumentEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException
+                ?: throw NoDataException
             realm.use { db ->
                 db.executeTransaction {
                     obj.document = document
@@ -79,7 +79,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException
+                ?: throw NoDataException
         }
     }
 
@@ -109,7 +109,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuDocumentEntity>()
                 .equalTo("id", id)
                 .findFirst()
-                ?: throw NoDataErrorException
+                ?: throw NoDataException
         }
     }
 
@@ -124,7 +124,7 @@ open class RealmUuLocalDataSource @Inject constructor(
                 .where<UuYearEntity>()
                 .equalTo("category", category)
                 .findAll()
-                ?: throw NoDataErrorException
+                ?: throw NoDataException
         }
     }
 

@@ -5,7 +5,7 @@ import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSou
 import com.github.syafiqq.data.datasource.database.realm.entity.UuDocumentEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuYearEntity
-import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
+import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataException
 import com.github.syafiqq.domain.usecase.uu.DeleteExistingUuRepositoryUseCase
 import com.github.syafiqq.realtestutil.domain.usecase.ClearLocalDataUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -70,12 +70,12 @@ class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
             try {
                 assertThat(uuLocalDataSource.fetchUuDocument("1"), `is`(nullValue()))
             } catch (e: Exception) {
-                assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
+                assertThat(e, `is`(instanceOf(NoDataException::class.java)))
             }
             try {
                 assertThat(uuLocalDataSource.fetchUu("1"), `is`(nullValue()))
             } catch (e: Exception) {
-                assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
+                assertThat(e, `is`(instanceOf(NoDataException::class.java)))
             }
         }
     }
