@@ -68,6 +68,7 @@ class SplashScreenFragmentViewModel @ViewModelInject constructor(
             actionUpdateFailed()
             _error.postValue(
                 ViewModelErrorHandler.handleDefaultError(
+                    androidResourceProvider,
                     e,
                     onRetry = ::initAppData,
                     onComplete = {},
