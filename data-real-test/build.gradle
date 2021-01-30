@@ -42,8 +42,8 @@ dependencies {
     androidTestImplementation "com.jakewharton.timber:timber:4.7.1"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0"
     androidTestImplementation "com.google.dagger:dagger:2.31.2"
-    kaptAndroidTest "com.google.dagger:dagger-compiler:2.31.2-alpha"
-    kaptAndroidTest "com.google.dagger:dagger-android-processor:2.31.2-alpha"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:2.31.2"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:2.31.2"
     androidTestImplementation project(":real-test-util")
     androidTestImplementation project(":domain")
     androidTestImplementation project(":data")
