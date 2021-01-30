@@ -4,9 +4,9 @@ import com.github.syafiqq.domain.di.binds.RepositoryVersionUseCaseBinds
 import com.github.syafiqq.domain.di.binds.UuRepositoryUseCaseBinds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         RepositoryVersionUseCaseBinds::class,
