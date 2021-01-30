@@ -28,15 +28,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSource,
     UuRemoteDataSource {
-    private fun versionQuery(): Query {
-        return Firebase
-            .database
-            .reference
-            .child(FirebaseConstants.PATHS.DB.VERSION)
-            .child(FirebaseConstants.REPOSITORY_VERSION)
-            .orderByKey()
-            .limitToLast(1)
-    }
 
     override suspend fun fetchVersion(): RepositoryVersionEntity {
         return coroutineScope {
@@ -67,13 +58,6 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
         }
     }
 
-    private fun orderQuery(): Query {
-        return Firebase
-            .database
-            .reference
-            .child(FirebaseConstants.PATHS.DB.ORDER)
-    }
-
     override suspend fun fetchUuOrder(): List<UuOrderEntity> {
         return coroutineScope {
             suspendCoroutine { continuation ->
@@ -97,13 +81,6 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
         }
     }
 
-    private fun getUuQuery(filename: String): StorageReference {
-        return Firebase
-            .storage
-            .reference
-            .child(String.format("%s/%s", FirebaseConstants.PATHS.STORAGE.UU, filename))
-    }
-
     override suspend fun fetchUu(filename: String): List<UuEntity> {
         return coroutineScope {
             suspendCoroutine { continuation ->
@@ -120,6 +97,30 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                     }
             }
         }
+    }
+
+    private fun versionQuery(): Query {
+        return Firebase
+            .database
+            .reference
+            .child(FirebaseConstants.PATHS.DB.VERSION)
+            .child(FirebaseConstants.REPOSITORY_VERSION)
+            .orderByKey()
+            .limitToLast(1)
+    }
+
+    private fun orderQuery(): Query {
+        return Firebase
+            .database
+            .reference
+            .child(FirebaseConstants.PATHS.DB.ORDER)
+    }
+
+    private fun getUuQuery(filename: String): StorageReference {
+        return Firebase
+            .storage
+            .reference
+            .child(String.format("%s/%s", FirebaseConstants.PATHS.STORAGE.UU, filename))
     }
 }
 
