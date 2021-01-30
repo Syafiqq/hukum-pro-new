@@ -21,8 +21,8 @@ private fun RepositoryVersionEntity.toTimestampDate(): Date? {
     val sdf = SimpleDateFormat(FirebaseConstants.VERSION_DATE_FORMAT, Locale.getDefault())
     try {
         return sdf.parse(timestamp)
-    } catch (throwable: Throwable) {
-        Timber.e(throwable)
+    } catch (error: Exception) {
+        Timber.e(error)
     }
     return null
 }

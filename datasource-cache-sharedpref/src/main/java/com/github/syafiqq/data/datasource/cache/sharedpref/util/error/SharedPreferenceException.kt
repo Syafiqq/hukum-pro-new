@@ -1,9 +1,10 @@
 package com.github.syafiqq.data.datasource.cache.sharedpref.util.error
 
-sealed class SharedPreferenceException(
-    override val message: String?,
-    override val cause: Throwable?,
-) : Throwable(message, cause)
+import com.github.syafiqq.common.error.DefinedException
+import com.github.syafiqq.common.error.ErrorCode
 
-class NoSharedPreferenceInstanceException(cause: Throwable? = null) :
-    SharedPreferenceException("No Shared Preference Instance Found", cause)
+object NoSharedPreferenceInstanceException : DefinedException(
+    ErrorCode.ERROR_SYSTEM_NO_SHARED_PREFERENCES_INSTANCE.name,
+    ErrorCode.ERROR_SYSTEM_NO_SHARED_PREFERENCES_INSTANCE.code,
+    null
+)

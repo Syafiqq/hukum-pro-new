@@ -28,8 +28,8 @@ sourceSets {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.google.dagger:dagger:2.29.1"
-    kapt "com.google.dagger:dagger-compiler:2.29.1"
+    implementation "com.google.dagger:dagger:2.31.2"
+    implementation project(path: ':common-java')
     testImplementation "junit:junit:4.13.1"
 }
 

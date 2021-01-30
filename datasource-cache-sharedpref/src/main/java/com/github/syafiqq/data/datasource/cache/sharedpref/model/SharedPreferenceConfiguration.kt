@@ -10,5 +10,5 @@ class SharedPreferenceConfiguration(
 )
 
 fun SharedPreferenceConfiguration.getSharedPreference(context: Context): SharedPreferences {
-    return context.getSharedPreferences(path, mode) ?: throw NoSharedPreferenceInstanceException()
+    return context.getSharedPreferences(path, mode) ?: throw NoSharedPreferenceInstanceException
 }

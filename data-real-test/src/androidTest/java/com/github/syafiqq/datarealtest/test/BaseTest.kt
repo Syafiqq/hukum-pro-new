@@ -7,6 +7,7 @@ import com.github.syafiqq.data.datasource.cache.sharedpref.contract.AppProfileCa
 import com.github.syafiqq.data.datasource.cache.sharedpref.contract.UuCacheDataSource
 import com.github.syafiqq.data.datasource.remote.firebase.contract.UuRemoteDataSource
 import com.github.syafiqq.datarealtest.di.AppComponent
+import com.github.syafiqq.datarealtest.di.DaggerAppComponent
 import io.realm.Realm
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -24,7 +25,7 @@ open class BaseTest {
     @Inject
     lateinit var uuProfileCacheDataSource: AppProfileCacheDataSource
 
-    override fun setUp() {
+    open fun setUp() {
         appContext = InstrumentationRegistry.getInstrumentation().targetContext
         Realm.init(appContext)
         setGraph()
@@ -41,6 +42,6 @@ open class BaseTest {
     }
 
     fun setGraph() {
-        appComponent = DaggerDataComponent.factory().create(appContext)
+        appComponent = DaggerAppComponent.factory().create(appContext)
     }
 }

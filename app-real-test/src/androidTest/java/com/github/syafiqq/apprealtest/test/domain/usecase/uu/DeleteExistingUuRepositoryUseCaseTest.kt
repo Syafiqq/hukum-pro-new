@@ -1,13 +1,13 @@
 package com.github.syafiqq.apprealtest.test.domain.usecase.uu
 
-import com.github.syafiqq.apprealtest.domain.usecase.ClearAppUseCase
 import com.github.syafiqq.apprealtest.test.BaseTest
 import com.github.syafiqq.data.datasource.database.realm.contract.UuLocalDataSource
 import com.github.syafiqq.data.datasource.database.realm.entity.UuDocumentEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuEntity
 import com.github.syafiqq.data.datasource.database.realm.entity.UuYearEntity
-import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataErrorException
+import com.github.syafiqq.data.datasource.database.realm.util.error.NoDataException
 import com.github.syafiqq.domain.usecase.uu.DeleteExistingUuRepositoryUseCase
+import com.github.syafiqq.realtestutil.domain.usecase.ClearLocalDataUseCase
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltAndroidTest
 class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
     @Inject
-    lateinit var clearAppUseCase: ClearAppUseCase
+    lateinit var clearAppUseCase: ClearLocalDataUseCase
 
     @Inject
     lateinit var uuLocalDataSource: UuLocalDataSource
@@ -36,7 +36,9 @@ class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
     override fun setUp() {
         super.setUp()
         hiltRule.inject()
-        clearAppUseCase.truncateSavedStorage()
+        runBlocking {
+            clearAppUseCase.execute()
+        }
     }
 
     @Test
@@ -67,13 +69,13 @@ class DeleteExistingUuRepositoryUseCaseTest : BaseTest() {
             assertThat(uuLocalDataSource.fetchUuYear(1), `is`(empty()))
             try {
                 assertThat(uuLocalDataSource.fetchUuDocument("1"), `is`(nullValue()))
-            } catch (e: Throwable) {
-                assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
+            } catch (e: Exception) {
+                assertThat(e, `is`(instanceOf(NoDataException::class.java)))
             }
             try {
                 assertThat(uuLocalDataSource.fetchUu("1"), `is`(nullValue()))
-            } catch (e: Throwable) {
-                assertThat(e, `is`(instanceOf(NoDataErrorException::class.java)))
+            } catch (e: Exception) {
+                assertThat(e, `is`(instanceOf(NoDataException::class.java)))
             }
         }
     }

@@ -27,8 +27,8 @@ private fun UuEntity.toCreatedAt(): Date? {
     val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     try {
         return sdf.parse(timestamp)
-    } catch (throwable: Throwable) {
-        Timber.e(throwable)
+    } catch (error: Exception) {
+        Timber.e(error)
     }
     return null
 }

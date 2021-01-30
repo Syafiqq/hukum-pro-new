@@ -1,5 +1,7 @@
 package com.github.syafiqq.domain.usecase.repoversion
 
+import com.github.syafiqq.common.error.DefinedException
+import com.github.syafiqq.common.error.ErrorCode
 import com.github.syafiqq.domain.contract.repository.AppProfileRepositoryInterface
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionState
 import com.github.syafiqq.domain.entity.repoversion.RepositoryVersionUpToDate
@@ -27,4 +29,8 @@ class CheckRemoteVersionUseCaseImpl @Inject constructor(
     }
 }
 
-object InvalidRepositoryVersionException : Throwable("Invalid repository version")
+object InvalidRepositoryVersionException : DefinedException(
+    ErrorCode.ERROR_DATA_INVALID_REPOSITORY_VERSION.name,
+    ErrorCode.ERROR_DATA_INVALID_REPOSITORY_VERSION.code,
+    null
+)

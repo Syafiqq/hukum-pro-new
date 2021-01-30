@@ -2,7 +2,7 @@ package com.github.syafiqq.datarealtest.test.di
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.github.syafiqq.data.di.DaggerDataComponent
+import com.github.syafiqq.datarealtest.di.DaggerAppComponent
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.notNullValue
@@ -15,7 +15,7 @@ class DomainComponentTest {
     fun createGraphTest() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        val appComponent = DaggerDataComponent.factory().create(appContext)
+        val appComponent = DaggerAppComponent.factory().create(appContext)
         assertThat(appContext, `is`(notNullValue()))
         assertThat(appComponent, `is`(notNullValue()))
     }

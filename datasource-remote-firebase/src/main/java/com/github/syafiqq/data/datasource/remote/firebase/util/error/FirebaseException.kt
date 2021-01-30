@@ -1,15 +1,18 @@
 package com.github.syafiqq.data.datasource.remote.firebase.util.error
 
-import com.github.syafiqq.common.ApiThrowable
+import com.github.syafiqq.common.error.ApiException
+import com.github.syafiqq.common.error.ErrorCode
 
-sealed class FirebaseException(
-    override val message: String?,
-    override val cause: Throwable?,
-    override val retryable: Boolean = false
-) : ApiThrowable(message, cause, retryable)
-
-class NoDataErrorException(cause: Throwable? = null) :
-    FirebaseException("Data Not Found", cause, false)
+object NoDataException :
+    ApiException(
+        ErrorCode.ERROR_DATA_NO_DATA_AVAILABLE.name,
+        ErrorCode.ERROR_DATA_NO_DATA_AVAILABLE.code,
+        null
+    )
 
 class ParseDataException(cause: Throwable? = null) :
-    FirebaseException("Unable to parse data", cause, false)
+    ApiException(
+        ErrorCode.ERROR_DATA_PARSE_DATA_FAILURE.name,
+        ErrorCode.ERROR_DATA_PARSE_DATA_FAILURE.code,
+        cause
+    )

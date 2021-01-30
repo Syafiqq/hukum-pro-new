@@ -6,7 +6,7 @@ import com.github.syafiqq.data.datasource.remote.firebase.entity.RepositoryVersi
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuEntity
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuOrderEntity
 import com.github.syafiqq.data.datasource.remote.firebase.util.FirebaseConstants
-import com.github.syafiqq.data.datasource.remote.firebase.util.error.NoDataErrorException
+import com.github.syafiqq.data.datasource.remote.firebase.util.error.NoDataException
 import com.github.syafiqq.data.datasource.remote.firebase.util.error.ParseDataException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,15 +28,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSource,
     UuRemoteDataSource {
-    private fun versionQuery(): Query {
-        return Firebase
-            .database
-            .reference
-            .child(FirebaseConstants.PATHS.DB.VERSION)
-            .child(FirebaseConstants.REPOSITORY_VERSION)
-            .orderByKey()
-            .limitToLast(1)
-    }
 
     override suspend fun fetchVersion(): RepositoryVersionEntity {
         return coroutineScope {
@@ -54,24 +45,17 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                                     .next()
                                     .getValue(RepositoryVersionEntity::class.java)
                                 if (version == null) {
-                                    continuation.resumeWithException(NoDataErrorException())
+                                    continuation.resumeWithException(NoDataException)
                                 } else {
                                     version.let(continuation::resume)
                                 }
                                 return
                             }
-                            continuation.resumeWithException(NoDataErrorException())
+                            continuation.resumeWithException(NoDataException)
                         }
                     })
             }
         }
-    }
-
-    private fun orderQuery(): Query {
-        return Firebase
-            .database
-            .reference
-            .child(FirebaseConstants.PATHS.DB.ORDER)
     }
 
     override suspend fun fetchUuOrder(): List<UuOrderEntity> {
@@ -97,13 +81,6 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
         }
     }
 
-    private fun getUuQuery(filename: String): StorageReference {
-        return Firebase
-            .storage
-            .reference
-            .child(String.format("%s/%s", FirebaseConstants.PATHS.STORAGE.UU, filename))
-    }
-
     override suspend fun fetchUu(filename: String): List<UuEntity> {
         return coroutineScope {
             suspendCoroutine { continuation ->
@@ -111,7 +88,7 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                     .getBytes(Long.MAX_VALUE).addOnSuccessListener {
                         val uu = it?.toListUUEntity()
                         if (uu == null) {
-                            continuation.resumeWithException(NoDataErrorException())
+                            continuation.resumeWithException(NoDataException)
                         } else {
                             continuation.resume(uu)
                         }
@@ -121,6 +98,30 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
             }
         }
     }
+
+    private fun versionQuery(): Query {
+        return Firebase
+            .database
+            .reference
+            .child(FirebaseConstants.PATHS.DB.VERSION)
+            .child(FirebaseConstants.REPOSITORY_VERSION)
+            .orderByKey()
+            .limitToLast(1)
+    }
+
+    private fun orderQuery(): Query {
+        return Firebase
+            .database
+            .reference
+            .child(FirebaseConstants.PATHS.DB.ORDER)
+    }
+
+    private fun getUuQuery(filename: String): StorageReference {
+        return Firebase
+            .storage
+            .reference
+            .child(String.format("%s/%s", FirebaseConstants.PATHS.STORAGE.UU, filename))
+    }
 }
 
 private fun ByteArray.toListUUEntity(): List<UuEntity> {
@@ -129,7 +130,10 @@ private fun ByteArray.toListUUEntity(): List<UuEntity> {
     val jsonAdapter: JsonAdapter<List<UuEntity>> =
         moshi.adapter(type)
 
-    return jsonAdapter
-        .fromJson(this.toString(Charset.defaultCharset()))
-        ?: throw ParseDataException()
+    return try {
+        jsonAdapter
+            .fromJson(this.toString(Charset.defaultCharset())) ?: throw ParseDataException()
+    } catch (e: Exception) {
+        throw ParseDataException(e)
+    }
 }
