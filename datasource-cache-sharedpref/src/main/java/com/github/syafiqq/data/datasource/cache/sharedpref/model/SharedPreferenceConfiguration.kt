@@ -2,7 +2,7 @@ package com.github.syafiqq.data.datasource.cache.sharedpref.model
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.github.syafiqq.data.datasource.cache.sharedpref.util.error.NoSharedPreferenceInstanceException
+import com.github.syafiqq.data.datasource.cache.sharedpref.util.error.SharedPreferenceExceptionFactory
 
 class SharedPreferenceConfiguration(
     val path: String,
@@ -10,5 +10,6 @@ class SharedPreferenceConfiguration(
 )
 
 fun SharedPreferenceConfiguration.getSharedPreference(context: Context): SharedPreferences {
-    return context.getSharedPreferences(path, mode) ?: throw NoSharedPreferenceInstanceException
+    return context.getSharedPreferences(path, mode)
+        ?: throw SharedPreferenceExceptionFactory.createNoSharedPreferenceInstance()
 }
