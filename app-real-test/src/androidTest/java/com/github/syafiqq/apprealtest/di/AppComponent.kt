@@ -13,10 +13,10 @@ import com.github.syafiqq.realtestutil.di.DatabaseDataSourceBinds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 object AppContextModule {
     @Provides
@@ -25,7 +25,7 @@ object AppContextModule {
     }
 }
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         RealmModule::class,
@@ -37,7 +37,7 @@ object AppContextModule {
 )
 object DataLayerModule
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         DomainRepositoryBinds::class,
@@ -45,7 +45,7 @@ object DataLayerModule
 )
 object DataDomainLayerInversionModule
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         RepositoryVersionUseCaseBinds::class,
@@ -54,7 +54,7 @@ object DataDomainLayerInversionModule
 )
 object DomainLayerModule
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module(
     includes = [
         ClearLocalDataBinds::class,
