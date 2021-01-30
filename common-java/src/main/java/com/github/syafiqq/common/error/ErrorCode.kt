@@ -10,13 +10,16 @@ enum class ErrorCode(val code: String) {
     ERROR_DATA_NO_DATA_AVAILABLE("02-002"),
     ERROR_DATA_PARSE_DATA_FAILURE("02-003"),
 
+    // API
+    ERROR_API_FIREBASE_PREFIXED("03-FR-"),
+
     ERROR_UNKNOWN("00-000")
 }
 
 object ExceptionFactory {
     fun createDefinedException(code: ErrorCode, cause: Throwable? = null) =
-        DefinedException(message = code.name, code = code.code, cause = cause)
+        DefinedException(message = null, code = code.code, cause = cause)
 
     fun createApiException(code: ErrorCode, cause: Throwable? = null) =
-        ApiException(message = code.name, code = code.code, cause = cause)
+        ApiException(message = null, code = code.code, cause = cause)
 }

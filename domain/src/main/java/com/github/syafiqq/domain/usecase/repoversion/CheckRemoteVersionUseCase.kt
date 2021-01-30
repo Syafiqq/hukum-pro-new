@@ -30,7 +30,7 @@ class CheckRemoteVersionUseCaseImpl @Inject constructor(
 }
 
 object InvalidRepositoryVersionException : DefinedException(
-    ErrorCode.ERROR_DATA_INVALID_REPOSITORY_VERSION.name,
+    null,
     ErrorCode.ERROR_DATA_INVALID_REPOSITORY_VERSION.code,
     null
 )

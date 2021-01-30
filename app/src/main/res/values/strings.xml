@@ -11,4 +11,5 @@
     <string name="error_data_invalid_repository">Invalid repository version</string>
     <string name="error_system_no_local_storage">No local storage found</string>
     <string name="error_system_no_cache_storage">No cache storage found</string>
+    <string name="error_network_call_failure">Network call error</string>
 </resources>

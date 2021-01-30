@@ -14,18 +14,18 @@ object ViewModelErrorHandler {
     ): Exception {
         return when (e) {
             is DefinedException -> ViewCompletableError(
-                ViewModelErrorCodeMapper.mapError(
+                e.message ?: ViewModelErrorCodeMapper.mapError(
                     provider,
                     e.code
-                ) ?: e.message,
+                ),
                 e,
                 callback = onComplete
             )
             is ApiException -> ViewRetryableError(
-                ViewModelErrorCodeMapper.mapError(
+                e.message ?: ViewModelErrorCodeMapper.mapError(
                     provider,
                     e.code
-                ) ?: e.message,
+                ),
                 e
             ) {
                 when (it) {

@@ -1,13 +1,13 @@
 package com.github.syafiqq.data.datasource.remote.firebase.implementation
 
+import com.github.syafiqq.common.error.ApiException
 import com.github.syafiqq.data.datasource.remote.firebase.contract.AppProfileRemoteDataSource
 import com.github.syafiqq.data.datasource.remote.firebase.contract.UuRemoteDataSource
 import com.github.syafiqq.data.datasource.remote.firebase.entity.RepositoryVersionEntity
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuEntity
 import com.github.syafiqq.data.datasource.remote.firebase.entity.UuOrderEntity
 import com.github.syafiqq.data.datasource.remote.firebase.util.FirebaseConstants
-import com.github.syafiqq.data.datasource.remote.firebase.util.error.NoDataException
-import com.github.syafiqq.data.datasource.remote.firebase.util.error.ParseDataException
+import com.github.syafiqq.data.datasource.remote.firebase.util.error.FirebaseExceptionFactory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
@@ -35,23 +35,25 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                 versionQuery()
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError) {
-                            continuation.resumeWithException(error.toException())
+                            continuation.resumeWithException(
+                                FirebaseExceptionFactory.createFirebaseError(
+                                    error.code,
+                                    cause = error.toException()
+                                )
+                            )
                         }
 
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.childrenCount > 0) {
-                                val version = snapshot.children
-                                    .iterator()
-                                    .next()
-                                    .getValue(RepositoryVersionEntity::class.java)
-                                if (version == null) {
-                                    continuation.resumeWithException(NoDataException)
-                                } else {
-                                    version.let(continuation::resume)
-                                }
-                                return
+                            val version = snapshot.children
+                                .first()
+                                ?.getValue(RepositoryVersionEntity::class.java)
+                            if (version == null) {
+                                continuation.resumeWithException(
+                                    FirebaseExceptionFactory.createNoDataException()
+                                )
+                            } else {
+                                continuation.resume(version)
                             }
-                            continuation.resumeWithException(NoDataException)
                         }
                     })
             }
@@ -64,7 +66,12 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
                 orderQuery()
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError) {
-                            continuation.resumeWithException(error.toException())
+                            continuation.resumeWithException(
+                                FirebaseExceptionFactory.createFirebaseError(
+                                    error.code,
+                                    cause = error.toException()
+                                )
+                            )
                         }
 
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -85,15 +92,28 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
         return coroutineScope {
             suspendCoroutine { continuation ->
                 getUuQuery(filename = filename)
-                    .getBytes(Long.MAX_VALUE).addOnSuccessListener {
-                        val uu = it?.toListUUEntity()
-                        if (uu == null) {
-                            continuation.resumeWithException(NoDataException)
-                        } else {
-                            continuation.resume(uu)
+                    .getBytes(Long.MAX_VALUE)
+                    .addOnSuccessListener {
+                        try {
+                            val uu = it?.toListUUEntity()
+                            if (uu == null) {
+                                continuation.resumeWithException(
+                                    FirebaseExceptionFactory.createNoDataException()
+                                )
+                            } else {
+                                continuation.resume(uu)
+                            }
+                        } catch (e: Exception) {
+                            continuation.resumeWithException(e)
                         }
-                    }.addOnFailureListener {
-                        continuation.resumeWithException(it)
+                    }
+                    .addOnFailureListener {
+                        continuation.resumeWithException(
+                            FirebaseExceptionFactory.createFirebaseError(
+                                0,
+                                cause = it
+                            )
+                        )
                     }
             }
         }
@@ -124,6 +144,7 @@ class FirebaseRemoteDataSource @Inject constructor() : AppProfileRemoteDataSourc
     }
 }
 
+@Throws(ApiException::class)
 private fun ByteArray.toListUUEntity(): List<UuEntity> {
     val moshi = Moshi.Builder().build()
     val type = Types.newParameterizedType(List::class.java, UuEntity::class.java)
@@ -132,8 +153,9 @@ private fun ByteArray.toListUUEntity(): List<UuEntity> {
 
     return try {
         jsonAdapter
-            .fromJson(this.toString(Charset.defaultCharset())) ?: throw ParseDataException()
+            .fromJson(this.toString(Charset.defaultCharset()))
+            ?: throw FirebaseExceptionFactory.createParseDataException()
     } catch (e: Exception) {
-        throw ParseDataException(e)
+        throw FirebaseExceptionFactory.createParseDataException(e)
     }
 }
